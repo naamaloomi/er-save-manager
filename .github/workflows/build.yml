@@ -41,13 +41,20 @@ jobs:
         run: dotnet test
 
       - name: Restore
-        run: dontet restore {{ env.Project_Path}}
+        run: dotnet restore {{ env.Project_Path}}
 
       - name: Build
         run: dotnet build {{ env.Project_Path }} -c Release --no-restore
 
       - name: Publish
         run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
+
+      - name: Release
+        uses: actions/create-release@v1
+        env:
+          GITHUG_TOKEN: ${{ secrets.GITHUG_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
 
       # Restore the application to populate the obj folder with RuntimeIdentifiers
       # - name: Restore the application
