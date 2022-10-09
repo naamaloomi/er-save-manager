@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:er_save_manager" mc:Ignorable="d" Title="Elden Ring Save Manager" Height="450" Width="800">
+    xmlns:local="clr-namespace:er_save_manager" mc:Ignorable="d" Title="Elden Ring Save Manager" Height="450" Width="800" Background="SlateGray" BorderThickness="1" BorderBrush="Black">
     <Grid Margin="10">
         <!-- <DockPanel Margin="10">
         <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
@@ -12,17 +12,17 @@
     </DockPanel> -->
         <DockPanel Margin="10">
             <WrapPanel HorizontalAlignment="Left" DockPanel.Dock="Top" Margin="0,0,0,10">
-                <TextBlock Name="tbErSavePath" Margin="0,0,10,0"></TextBlock>
-                <Button Name="btnSelectFolder" Click="SelectFolder">
+                <TextBlock Name="tbErSavePath" Margin="0,0,10,0" Foreground="White"></TextBlock>
+                <Button Name="btnSelectFolder" Click="SelectFolder" BorderBrush="Black">
                     <TextBlock Margin="3,0,3,0">Select Folder</TextBlock>
                 </Button>
             </WrapPanel>
             <WrapPanel HorizontalAlignment="Left" DockPanel.Dock="Top" Margin="0,0,0,10">
-                <Button Name="btnNewSave" Click="NewSave">
+                <Button Name="btnNewSave" Click="NewSave" BorderBrush="Black">
                     <TextBlock Margin="3,0,3,0">New Save</TextBlock>
                 </Button>
             </WrapPanel>
-            <ListBox Name="lbSavesList" HorizontalContentAlignment="Stretch">
+            <ListBox Name="lbSavesList" HorizontalContentAlignment="Stretch" Background="LightGray" BorderThickness="1" BorderBrush="Black">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="0,2">
