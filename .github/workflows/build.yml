@@ -41,20 +41,29 @@ jobs:
         run: dotnet test
 
       - name: Restore
-        run: dotnet restore {{ env.Project_Path}}
+        run: dotnet restore ${{ env.Project_Path}}
 
       - name: Build
-        run: dotnet build {{ env.Project_Path }} -c Release --no-restore
+        run: dotnet build ${{ env.Project_Path }} -c Release --no-restore
 
       - name: Publish
         run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
 
       - name: Release
+        id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUG_TOKEN: ${{ secrets.GITHUG_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+
+      - name: Upload
+        uses: csexton/release-asset-action@v2
+        with:
+          github-token: ${{ env.GITHUB_TOKEN}}
+          pattern: bin\Debug\net6.0-windows\win-x64\publish\*.exe
+          release-url: ${{ steps.create_release.outputs.upload_url }}
 
       # Restore the application to populate the obj folder with RuntimeIdentifiers
       # - name: Restore the application
