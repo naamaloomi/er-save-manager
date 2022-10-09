@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:er_save_manager" mc:Ignorable="d" Title="Elden Ring Save Manager" Height="450" Width="800" Background="SlateGray" BorderThickness="1" BorderBrush="DarkSlateBlue">
+    xmlns:local="clr-namespace:er_save_manager" mc:Ignorable="d" Title="Elden Ring Save Manager" Height="450" Width="800" Background="SlateGray" BorderThickness="1" BorderBrush="DarkSlateBlue" WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <DockPanel Margin="10">
             <WrapPanel HorizontalAlignment="Left" DockPanel.Dock="Top" Margin="0,0,0,10">
