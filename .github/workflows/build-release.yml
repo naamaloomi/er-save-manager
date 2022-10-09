@@ -1,0 +1,60 @@
+name: Build (Release)
+
+on:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [Release]
+
+    runs-on:
+      windows-latest # For a list of available runner types, refer to
+      # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+
+    env:
+      Project_Path: er-save-manager.csproj
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Execute unit tests
+        run: dotnet test
+
+      - name: Restore
+        run: dotnet restore ${{ env.Project_Path}}
+
+      - name: Build
+        run: dotnet build ${{ env.Project_Path }} -c Release --no-restore
+
+      - name: Publish
+        run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
+
+      - name: Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+
+      - name: Upload
+        uses: csexton/release-asset-action@v2
+        with:
+          github-token: ${{ env.GITHUB_TOKEN}}
+          pattern: bin\Debug\net6.0-windows\win-x64\publish\*.exe
+          release-url: ${{ steps.create_release.outputs.upload_url }}

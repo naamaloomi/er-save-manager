@@ -455,3 +455,6 @@ $RECYCLE.BIN/
 
 # Save files
 saves
+
+# Certs
+SigningCertificate_Encoded.txt
