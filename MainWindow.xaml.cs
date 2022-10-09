@@ -47,6 +47,7 @@ namespace er_save_manager
                 id++;
             }
 
+            activeSavePath = activeSaveDir;
             tbActiveSavePath.Text = activeSaveDir;
             lbSavesList.ItemsSource = saves;
             lbSavesList.Items.Refresh();
@@ -63,49 +64,41 @@ namespace er_save_manager
 
         private void NewSave(object sender, RoutedEventArgs e)
         {
-            CopyDirectory(saves[0].Name, GetFirstAvailableSlot(), false);
+            CopyDirectory(activeSavePath, GetFirstAvailableSlot(), false);
             UpdateSavesList();
         }
 
         private void DeactivateSave()
         {
-            var activeSave = saves[0].Name;
             var saveSlot = GetFirstAvailableSlot();
-            Directory.Move(activeSave, saveSlot);
+            Directory.Move(activeSavePath, saveSlot);
         }
 
         private void ActivateSave(int id)
         {
-            var activeSaveName = GetBaseSaveName();
             var saveSlot = saves.First(d => d.Id == id).Name;
-            Directory.Move(saveSlot, activeSaveName);
+            Directory.Move(saveSlot, activeSavePath);
         }
 
         private string GetFirstAvailableSlot()
         {
-            // First save is always the active one
-            for (int i = 1; i < saves.Count; i++)
+            var i = 1;
+            foreach (var save in saves)
             {
-                var saveName = saves[i].Name;
                 var saveSlot = GetSaveName(i);
-                if (saveSlot != saveName)
+                if (saveSlot != save.Name)
                 {
                     return saveSlot;
                 }
+                i++;
             }
-            // If we can't find an available save file number the next number in line is
-            // the same as the length of the array since the index starts at 0
-            return GetSaveName(saves.Count);
+
+            return GetSaveName(saves.Count + 1);
         }
 
         private string GetSaveName(int i)
         {
-            return GetBaseSaveName() + "-" + i.ToString();
-        }
-
-        private string GetBaseSaveName()
-        {
-            return saves[0].Name;
+            return activeSavePath + "-" + i.ToString();
         }
 
         private (string, IEnumerable<string>) GetSaveDirs()
