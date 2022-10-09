@@ -13,6 +13,7 @@ namespace er_save_manager
     public partial class MainWindow : Window
     {
         private string erSavePath;
+        private string activeSavePath = string.Empty;
         private List<Save> saves = new List<Save>();
 
         public MainWindow()
@@ -36,16 +37,17 @@ namespace er_save_manager
 
         private void UpdateSavesList()
         {
-            var saveFolders = GetSaveDirs();
+            var (activeSaveDir, backupSavedirs) = GetSaveDirs();
             saves = new List<Save>();
             var id = 1;
 
-            foreach (var saveFolder in saveFolders)
+            foreach (var saveDir in backupSavedirs)
             {
-                saves.Add(new Save() { Name = saveFolder, Id = id });
+                saves.Add(new Save() { Name = saveDir, Id = id });
                 id++;
             }
 
+            tbActiveSavePath.Text = activeSaveDir;
             lbSavesList.ItemsSource = saves;
             lbSavesList.Items.Refresh();
         }
@@ -106,7 +108,7 @@ namespace er_save_manager
             return saves[0].Name;
         }
 
-        private IEnumerable<string> GetSaveDirs()
+        private (string, IEnumerable<string>) GetSaveDirs()
         {
             string[] dirs;
             try
@@ -115,10 +117,13 @@ namespace er_save_manager
             }
             catch (IOException)
             {
-                return new List<string>();
+                return (string.Empty, new List<string>());
             }
 
-            return dirs.Where(d => GetDirName(d).Length == 17 || GetDirName(d).Length == 19);
+            var activeSaveDir = dirs.First(d => GetDirName(d).Length == 17);
+            var backupSaveDirs = dirs.Where(d => GetDirName(d).Length == 19);
+
+            return (activeSaveDir, backupSaveDirs);
         }
 
         private string GetDirName(string path)

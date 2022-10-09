@@ -3,26 +3,40 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:er_save_manager" mc:Ignorable="d" Title="Elden Ring Save Manager" Height="450" Width="800" Background="SlateGray" BorderThickness="1" BorderBrush="Black">
+    xmlns:local="clr-namespace:er_save_manager" mc:Ignorable="d" Title="Elden Ring Save Manager" Height="450" Width="800" Background="SlateGray" BorderThickness="1" BorderBrush="DarkSlateBlue">
     <Grid Margin="10">
-        <!-- <DockPanel Margin="10">
-        <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
-            <Button Name="btnSelectFolder" Click="selectFolder">Select Folder</Button>
-        </WrapPanel>
-    </DockPanel> -->
         <DockPanel Margin="10">
             <WrapPanel HorizontalAlignment="Left" DockPanel.Dock="Top" Margin="0,0,0,10">
-                <TextBlock Name="tbErSavePath" Margin="0,0,10,0" Foreground="White"></TextBlock>
-                <Button Name="btnSelectFolder" Click="SelectFolder" BorderBrush="Black">
-                    <TextBlock Margin="3,0,3,0">Select Folder</TextBlock>
-                </Button>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="5"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Name="tbErSavePathTitle" Margin="0,0,3,0" Foreground="White" Grid.Row="0" Grid.Column="0">Saves Folder: </TextBlock>
+                    <Border BorderThickness="1" BorderBrush="Black" Margin="0,0,10,0" Padding="3,0,3,0" Background="DarkSlateBlue" Grid.Row="0" Grid.Column="1">
+                        <TextBlock Name="tbErSavePath" Foreground="White" Background="DarkSlateBlue"></TextBlock>
+                    </Border>
+                    <Button Name="btnSelectFolder" Click="SelectFolder" BorderBrush="Black" ToolTip="Select  your saves folder" ToolTipService.InitialShowDelay="50" Grid.Row="0" Grid.Column="2">
+                        <TextBlock Margin="3,0,3,0">Select Saves Folder</TextBlock>
+                    </Button>
+                    <!-- </WrapPanel> -->
+                    <!-- <WrapPanel HorizontalAlignment="Left" DockPanel.Dock="Top" Margin="0,0,0,10"> -->
+                    <TextBlock Name="tbActiveSavePathTitle" Margin="0,0,3,0" Foreground="White" Grid.Row="2" Grid.Column="0">Active save: </TextBlock>
+                    <Border BorderThickness="1" BorderBrush="Black" Margin="0,0,10,0" Padding="3,0,3,0" Background="DarkSlateBlue" Grid.Row="2" Grid.Column="1">
+                        <TextBlock Name="tbActiveSavePath" Foreground="White" Background="DarkSlateBlue"></TextBlock>
+                    </Border>
+                    <Button Name="btnNewSave" Click="NewSave" BorderBrush="Black" ToolTip="Create a new save and set it as active" ToolTipService.InitialShowDelay="50" Grid.Row="2" Grid.Column="2">
+                        <TextBlock Margin="3,0,3,0">New Save</TextBlock>
+                    </Button>
+                </Grid>
             </WrapPanel>
-            <WrapPanel HorizontalAlignment="Left" DockPanel.Dock="Top" Margin="0,0,0,10">
-                <Button Name="btnNewSave" Click="NewSave" BorderBrush="Black">
-                    <TextBlock Margin="3,0,3,0">New Save</TextBlock>
-                </Button>
-            </WrapPanel>
-            <ListBox Name="lbSavesList" HorizontalContentAlignment="Stretch" Background="LightGray" BorderThickness="1" BorderBrush="Black">
+            <ListBox Name="lbSavesList" HorizontalContentAlignment="Stretch" Background="LightGray" BorderThickness="1" BorderBrush="DarkSlateBlue">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="0,2">
@@ -31,7 +45,7 @@
                                 <ColumnDefinition Width="100" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Name}" />
-                            <Button Grid.Column="1" Name="btnSelect" Click="SelectSave" DataContext="{Binding Id}">
+                            <Button Grid.Column="1" Name="btnSelect" Click="SelectSave" DataContext="{Binding Id}" ToolTip="Backup current save and set this one as active" ToolTipService.InitialShowDelay="50">
                                 <TextBlock Margin="3,0,3,0">Select Save</TextBlock>
                             </Button>
                         </Grid>
